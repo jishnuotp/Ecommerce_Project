@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{category.description | truncatewords:155}}
+    {% else %}
+        Welcome to Amazone store where you can buys different items.....
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{category.name}}---Amazone
+    {% else %}
+        See our new collection ---Amazone
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    {% if category %}
+        <div class="my_row_class">
+            <div class="text-center mx_auto">
+                <p><a href="{% url 'Application:allProdCat' %}"><b>Our Product Collection</b></a> </p>
+            </div>
+        </div>
+    {% endif %}
+        <div>
+            {% if category %}
+                <center>
+                    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" height="500" width="1000">
+                </center>
+        </div>
+        <br>
+            <div>
+                <h1 class="text-center my_title">{{category.name}}</h1>
+                <p class="text-justify">{{category.description}}</p>
+            </div>
+            {% else %}
+                <div class="text-center">
+                    <img class="my_image" src="{% static 'image/Banner.png' %}" alt="Our Products" width="1200" height="450">
+                </div>
+                <br>
+                <div>
+                    <div>
+                        <h1 class="text-center my_title ">Our All Products</h1>
+                        <p class="text-justify">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus neque erat, sodales ut sollicitudin eu, ultrices eget ex. Curabitur pretium felis nec erat auctor rhoncus.
+                            Integer interdum condimentum dignissim. Nam sed urna vel ipsum iaculis posuere. Suspendisse potenti. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi ullamcorper, felis at accumsan porta, nunc eros pulvinar mi,
+                            interdum tristique tortor erat at tellus. Morbi facilisis est vel mi ultrices, eu facilisis est malesuada.
+                            Fusce accumsan tincidunt nunc, eu molestie nulla bibendum pharetra. Suspendisse sodales dapibus velit, finibus varius lorem bibendum non.
+                            Cras vestibulum sodales justo, eu euismod nibh. Suspendisse non interdum purus, mollis semper magna. Duis vestibulum urna magna, at tempus nunc dictum sit amet. Curabitur urna eros,
+                            tincidunt porta nisi aliquet, egestas sodales sem. Fusce gravida metus et leo euismod, id feugiat sem viverra. In at ante dolor. Integer semper placerat viverra. Fusce at nunc id erat aliquet laoreet non ac justo. Maecenas erat ex,
+                            fringilla non orci sit amet, posuere sodales nulla. Praesent semper metus et imperdiet eleifend. Curabitur varius velit diam, eu imperdiet urna tristique nec.
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+                <div class="container">
+                    <div class="row mx-auto">
+                        {% for product in products.object_list %}
+                            <div class="my_bottom_margin col-9 col-md-4 col-lg-4">
+                                <div class="card text-center" style="min-width:18rem;">
+                                    <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" width="320" height="350"></a>
+                                    <div class="card-body text-center">
+                                        <h4 class="card-body">{{product.name}}</h4>
+                                        <p>$ {{product.price}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="mx-auto">
+                            {% if products.paginator.num_pages %}
+                            <hr>
+                            <div class="text-center">
+                                {% for pg in products.paginator.page_range %}
+                                    <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+        </div>
+{% endblock %}
